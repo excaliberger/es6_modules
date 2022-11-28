@@ -1,9 +1,9 @@
 class Car {
-    constructor(id, make, model, year) {
-        this.id = id;
-        this.make = make;
-        this.model = model;
-        this.year = year;
+    constructor(carArgs) {
+        this.id = carArgs.id;
+        this.make = carArgs.make;
+        this.model = carArgs.model;
+        this.year = carArgs.year;
     }
 }
 

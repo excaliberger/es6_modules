@@ -1,28 +1,26 @@
 import WishList from "./wishlist.js"
 import Car from "./car.js";
 
-let form = document.querySelector("#submitForm");
-let makeInput = document.querySelector("#makeInput");
-let modelInput = document.querySelector("#modelInput");
-let yearInput = document.querySelector("#yearInput");
-let makeDisplay = document.querySelector("#car-make");
-let modelDisplay = document.querySelector("#car-model");
-let yearDisplay = document.querySelector("#car-year");
-let removeBtn = document.querySelector("#removeBtn");
+let form = document.getElementById("submitForm");
+let makeInput = document.getElementById("makeInput");
+let modelInput = document.getElementById("modelInput");
+let yearInput = document.getElementById("yearInput");
+let makeDisplay = document.getElementById("car-make");
+let modelDisplay = document.getElementById("car-model");
+let yearDisplay = document.getElementById("car-year");
+let removeBtn = document.querySelector(".removeBtn");
 let wishlistUl = document.querySelector("#wishListContainer > ul");
 
-let newWishlist = new WishList();
+let newWishlist = new WishList([], 0);
 
 form.addEventListener('submit', addCar);
-removeBtn.addEventListener("click", removeCar);
-
+removeBtn.onclick = removeCar;
 
 function updateDOMList() {
     wishlistUl.innerHTML = "";
-    WishList.list.forEach((car) =>{
-        console.log(car);
+    newWishlist.list.forEach((car) =>{
         const li = document.createElement("li");
-        li.textContent = `${car.make}${car.model}`;
+        li.textContent = `${car.make} ${car.model}`;
         wishlistUl.appendChild(li);
         li.onclick = () => showCarDetails(car);
     })  
@@ -31,7 +29,7 @@ function updateDOMList() {
 function showCarDetails(car) {
     makeDisplay.textContent = car.make;
     modelDisplay.textContent = car.model;
-    yearDisplay.textContent = car.model;
+    yearDisplay.textContent = car.year;
     removeBtn.disabled = false;
     removeBtn.setAttribute("data-carId", car.id);
 }
@@ -39,24 +37,26 @@ function showCarDetails(car) {
 
 function addCar (click) {
     click.preventDefault();
+    let make = makeInput.value;
+    let model = modelInput.value;
+    let year = yearInput.value;
     
-    let make = document.getElementById("makeInput");
-    let model = document.getElementById("modelInput");
-    let year = document.getElementById("yearInput");
-    let newCar = new Car (make.value, model.value, year.value);
-    
-    newWishlist.add(newCar);
-    console.log(newCar);
+    newWishlist.add(make, model, year);
 
     updateDOMList();
+
+    makeInput.value = null;
+    modelInput.value = null;
+    yearInput.value = null;
 }
 
 function removeCar() {
-    this.id--
-    const removeFromArrayOnClick = this.list.filter((car) => {
-        return car !== bookToRemove;
-    })
-    this.books = removeFromArrayOnClick;
-    console.log(this.books);
-    console.log(this.bookCount);    
-}
+    let carId = Number(removeBtn.getAttribute("data-carId"));
+    newWishlist.remove(carId);
+    updateDOMList();
+  
+    makeDisplay.textContent = "";
+    modelDisplay.textContent = "";
+    yearDisplay.textContent = "";
+    removeBtn.disabled = true;
+  }
