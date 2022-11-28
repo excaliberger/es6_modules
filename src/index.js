@@ -13,15 +13,18 @@ let wishlistUl = document.querySelector("#wishListContainer > ul");
 
 let newWishlist = new WishList();
 
-form.addEventListener('submit', addCar)
+form.addEventListener('submit', addCar);
 removeBtn.addEventListener("click", removeCar);
+
 
 function updateDOMList() {
     wishlistUl.innerHTML = "";
     WishList.list.forEach((car) =>{
+        console.log(car);
         const li = document.createElement("li");
-        li.textContent = `${car.make}${car.model}`
+        li.textContent = `${car.make}${car.model}`;
         wishlistUl.appendChild(li);
+        li.onclick = () => showCarDetails(car);
     })  
 }
 
@@ -43,6 +46,7 @@ function addCar (click) {
     let newCar = new Car (make.value, model.value, year.value);
     
     newWishlist.add(newCar);
+    console.log(newCar);
 
     updateDOMList();
 }
